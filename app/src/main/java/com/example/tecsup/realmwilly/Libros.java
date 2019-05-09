@@ -1,5 +1,6 @@
 package com.example.tecsup.realmwilly;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
@@ -11,8 +12,10 @@ public class Libros extends RealmObject {
     String nombre;
     @Required
     String autor;
+    RealmList<Ejemplar> ejemplares;
 
     public Libros() {
+        this.ejemplares = new RealmList<>();
 
     }
 
@@ -20,6 +23,7 @@ public class Libros extends RealmObject {
         this.id = RealmApp.cod_libro.incrementAndGet();
         this.nombre = nombre;
         this.autor = autor;
+        this.ejemplares = new RealmList<>();
     }
 
     public int getId() {

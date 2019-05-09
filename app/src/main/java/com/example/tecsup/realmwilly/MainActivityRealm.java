@@ -29,15 +29,10 @@ public class MainActivityRealm extends AppCompatActivity {
         realm = Realm.getDefaultInstance(); //para instanciar, es que se declaro, pero no se instanció
         Log.d("inicio", "actividad");
 
-
-
-
-
         //Listando libros
         RealmResults<Libros> libros = realm.where(Libros.class).findAll();
         adapter = new LIbrosAdapter (this, R.layout.item_libro,libros);
         lv.setAdapter(adapter);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +65,4 @@ public class MainActivityRealm extends AppCompatActivity {
         });
         builder.show();
     }
-
-
 }
