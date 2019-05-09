@@ -1,6 +1,7 @@
 package com.example.tecsup.realmwilly;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -19,6 +22,7 @@ public class MainActivityRealm extends AppCompatActivity {
     ListView lv;
     LIbrosAdapter adapter;
     FloatingActionButton fab;
+    public static final int TEXT_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,21 @@ public class MainActivityRealm extends AppCompatActivity {
                 AddLibroDialog();
             }
         });
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getApplicationContext(), activity_ejemplar.class);
+                // a nuestro intent le agregamos un mensaje sacado de nuestro edittext
+                Toast.makeText(MainActivityRealm.this, position + "", Toast.LENGTH_SHORT).show();
+                intent.putExtra("id_libro", position+1);
+                //startActivity(intent);
+                startActivityForResult(intent,TEXT_REQUEST);
+
+            }
+        });
+
     }
 
 
@@ -53,6 +72,7 @@ public class MainActivityRealm extends AppCompatActivity {
         //Creo los textview
         final TextView titulo = v.findViewById(R.id.titulo);
         final TextView autor = v.findViewById(R.id.autor);
+        //asigno el textview a mi bbuilder
         builder.setView(v);
         builder.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
             @Override

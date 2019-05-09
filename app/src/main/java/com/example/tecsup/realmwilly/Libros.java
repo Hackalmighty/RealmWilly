@@ -14,9 +14,9 @@ public class Libros extends RealmObject {
     String autor;
     RealmList<Ejemplar> ejemplares;
 
+
     public Libros() {
         this.ejemplares = new RealmList<>();
-
     }
 
     public Libros(String nombre, String autor) {
@@ -49,4 +49,13 @@ public class Libros extends RealmObject {
     public void setAutor(String autor) {
         this.autor = autor;
     }
+
+    public RealmList<Ejemplar> getEjemplares() {
+        return ejemplares;
+    }
+
+    public void setEjemplares(RealmList<Ejemplar> ejemplares) {
+        this.ejemplares = ejemplares;
+    }
 }
+
