@@ -26,6 +26,8 @@ public class MainActivityRealm extends AppCompatActivity {
     LIbrosAdapter adapter;
     FloatingActionButton fab;
     RealmResults<Libros> libros;
+    AlertDialog dialogo_opciones;
+
     public static final int TEXT_REQUEST = 1;
 
     @Override
@@ -55,7 +57,7 @@ public class MainActivityRealm extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), activity_ejemplar.class);
                 // a nuestro intent le agregamos un mensaje sacado de nuestro edittext
                 Toast.makeText(MainActivityRealm.this, position + "", Toast.LENGTH_SHORT).show();
-                intent.putExtra("id_libro", position+1);
+                intent.putExtra("id_libro", libros.get(position).getId());
                 //startActivity(intent);
                 startActivityForResult(intent,TEXT_REQUEST);
 
@@ -71,13 +73,14 @@ public class MainActivityRealm extends AppCompatActivity {
         inflater.inflate(R.menu.menu_libros, menu);
     }
 
-    public void MostrarMenuLibro(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    public void MostrarMenuLibro(final int posicion){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Opciones");
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.menu_libros, null);
         Button editar = v.findViewById(R.id.btn_editar);
         Button eliminar = v.findViewById(R.id.btn_eliminar);
+        builder.setView(v);
 
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,19 +92,18 @@ public class MainActivityRealm extends AppCompatActivity {
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Libros l = libros.first();
+                Libros l = libros.get(posicion);
                 realm.beginTransaction();
                 l.deleteFromRealm();
                 realm.commitTransaction();
                 adapter.notifyDataSetChanged();
+                dialogo_opciones.dismiss();
             }
         });
 
-
-
-
         builder.setView(v);
-        builder.show();
+        dialogo_opciones = builder.create();
+        dialogo_opciones.show();
     }
 
 
@@ -125,6 +127,7 @@ public class MainActivityRealm extends AppCompatActivity {
                 realm.beginTransaction();
                 realm.copyToRealm(l);
                 realm.commitTransaction();
+                adapter.notifyDataSetChanged();
             }
         });
         builder.show();

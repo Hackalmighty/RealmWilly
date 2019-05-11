@@ -40,7 +40,7 @@ public class LIbrosAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater l = LayoutInflater.from(context);
         View v = l.inflate(layout, null);
         TextView titulo = v.findViewById(R.id.tv_libro);
@@ -51,7 +51,7 @@ public class LIbrosAdapter extends BaseAdapter {
            @Override
            public void onClick(View v) {
                MainActivityRealm m = (MainActivityRealm)context;
-               m.MostrarMenuLibro();
+               m.MostrarMenuLibro(position);
            }
        });
 
