@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ public class MainActivityRealm extends AppCompatActivity {
     ListView lv;
     LIbrosAdapter adapter;
     FloatingActionButton fab;
+    RealmResults<Libros> libros;
     public static final int TEXT_REQUEST = 1;
 
     @Override
@@ -36,7 +38,7 @@ public class MainActivityRealm extends AppCompatActivity {
         Log.d("inicio", "actividad");
 
         //Listando libros
-        RealmResults<Libros> libros = realm.where(Libros.class).findAll();
+        libros = realm.where(Libros.class).findAll();
         adapter = new LIbrosAdapter (this, R.layout.item_libro,libros);
         lv.setAdapter(adapter);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -60,15 +62,46 @@ public class MainActivityRealm extends AppCompatActivity {
             }
         });
 
-
     }
-
 
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo){
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_libros, menu);
+    }
+
+    public void MostrarMenuLibro(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Opciones");
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View v = inflater.inflate(R.layout.menu_libros, null);
+        Button editar = v.findViewById(R.id.btn_editar);
+        Button eliminar = v.findViewById(R.id.btn_eliminar);
+
+        editar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Libros l = libros.first();
+                realm.beginTransaction();
+                l.deleteFromRealm();
+                realm.commitTransaction();
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+
+
+
+        builder.setView(v);
+        builder.show();
     }
 
 

@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import io.realm.RealmResults;
@@ -43,6 +45,15 @@ public class LIbrosAdapter extends BaseAdapter {
         View v = l.inflate(layout, null);
         TextView titulo = v.findViewById(R.id.tv_libro);
         TextView autor = v.findViewById(R.id.tv_autor);
+        ImageButton b = v.findViewById(R.id.mostrar_menu);
+
+       b.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               MainActivityRealm m = (MainActivityRealm)context;
+               m.MostrarMenuLibro();
+           }
+       });
 
         titulo.setText(libros.get(position).getNombre());
         autor.setText(libros.get(position).getAutor());
